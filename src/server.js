@@ -29,7 +29,10 @@ mongoose
   .catch((err) => console.error("Error connecting to MongoDB: ", err.message));
 
 const usersRoutes = require("./routes/users");
+const authRoutes = require("./routes/auth");
+
 app.use("/api/users", usersRoutes);
+app.use("/api/auth", authRoutes); 
 
 app.get("/", (req, res) => res.send("Server is running 🚀"));
 
