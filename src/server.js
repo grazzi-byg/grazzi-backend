@@ -28,9 +28,12 @@ mongoose
   .then(() => console.log("Connected to MongoDB 🎉"))
   .catch((err) => console.error("Error connecting to MongoDB: ", err.message));
 
-const usersRoutes = require("./routes/users");
-app.use("/api/users", usersRoutes);
+const productsRoutes = require("./routes/products");
+
+app.use("/api/v1/products", productsRoutes);
 
 app.get("/", (req, res) => res.send("Server is running 🚀"));
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
+);
