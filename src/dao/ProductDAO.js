@@ -1,7 +1,7 @@
 const Product = require("../models/Product");
-const GenericDAO = require("./GenericDao");
+const GlobalDAO = require("./GlobalDAO");
 
-class ProductDAO extends GenericDAO {
+class ProductDAO extends GlobalDAO{
   constructor() {
     super(Product);
   }

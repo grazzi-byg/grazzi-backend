@@ -1,4 +1,4 @@
-class GenericDAO {
+class GlobalDAO {
   constructor(model) {
     this.model = model;
   }
@@ -55,4 +55,4 @@ class GenericDAO {
   }
 }
 
-module.exports = GenericDAO;
+module.exports = GlobalDAO;
