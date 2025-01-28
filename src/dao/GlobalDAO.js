@@ -1,5 +1,5 @@
 class GlobalDAO {
-  constructor(model) {
+  constructor(model) {    
     this.model = model;
   }
 
@@ -20,7 +20,7 @@ class GlobalDAO {
     }
   }
 
-  async getById(id) {
+  async getById(id) {    
     try {
       const document = await this.model.findById(id);
       if (!document) throw new Error("Document not found");
