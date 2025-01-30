@@ -1,7 +1,7 @@
 class GlobalController {
   constructor(dao) {    
     this.dao = dao;
-    console.log(this.dao);    
+    console.log(this.dao);
   }
 
   async create(req, res) {
@@ -14,7 +14,6 @@ class GlobalController {
   }
 
   async getAll(req, res) {
-    console.log(this.dao);
     try {
       const items = await this.dao.getAll();
       res.status(200).json(items);
@@ -23,9 +22,10 @@ class GlobalController {
     }
   }
 
-  async getById(req, res) {
+  async getByKey(req, res) {
     try {
-      const item = await this.dao.getById(req.params.id);
+      const { key, value } = req.params; // Extraer clave y valor de los parámetros de la URL
+      const item = await this.dao.getByKey(key, value);
       if (!item) {
         return res.status(404).json({ message: "Item not found" });
       }
@@ -35,9 +35,10 @@ class GlobalController {
     }
   }
 
-  async updateById(req, res) {
+  async updateByKey(req, res) {
     try {
-      const updatedItem = await this.dao.updateById(req.params.id, req.body);
+      const { key, value } = req.params;
+      const updatedItem = await this.dao.updateByKey(key, value, req.body);
       if (!updatedItem) {
         return res.status(404).json({ message: "Item not found" });
       }
@@ -47,9 +48,10 @@ class GlobalController {
     }
   }
 
-  async deleteById(req, res) {
+  async deleteByKey(req, res) {
     try {
-      const deletedItem = await this.dao.deleteById(req.params.id);
+      const { key, value } = req.params;
+      const deletedItem = await this.dao.deleteByKey(key, value);
       if (!deletedItem) {
         return res.status(404).json({ message: "Item not found" });
       }

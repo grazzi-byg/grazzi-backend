@@ -1,5 +1,5 @@
 class GlobalDAO {
-  constructor(model) {    
+  constructor(model) {
     this.model = model;
   }
 
@@ -20,37 +20,37 @@ class GlobalDAO {
     }
   }
 
-  async getById(id) {    
+  async getByKey(key, value) {
     try {
-      const document = await this.model.findById(id);
+      const document = await this.model.findOne({ [key]: value });
       if (!document) throw new Error("Document not found");
       return document;
     } catch (error) {
-      throw new Error(`Error getting document: ${error.message}`);
+      throw new Error(`Error getting document by ${key}: ${error.message}`);
     }
   }
 
-  async updateById(id, updateData) {
+  async updateByKey(key, value, updateData) {
     try {
-      const updatedDocument = await this.model.findByIdAndUpdate(
-        id,
+      const updatedDocument = await this.model.findOneAndUpdate(
+        { [key]: value },
         updateData,
         { new: true, runValidators: true }
       );
       if (!updatedDocument) throw new Error("Document not found");
       return updatedDocument;
     } catch (error) {
-      throw new Error(`Error updating document: ${error.message}`);
+      throw new Error(`Error updating document by ${key}: ${error.message}`);
     }
   }
 
-  async deleteById(id) {
+  async deleteByKey(key, value) {
     try {
-      const deletedDocument = await this.model.findByIdAndDelete(id);
+      const deletedDocument = await this.model.findOneAndDelete({ [key]: value });
       if (!deletedDocument) throw new Error("Document not found");
       return deletedDocument;
     } catch (error) {
-      throw new Error(`Error deleting document: ${error.message}`);
+      throw new Error(`Error deleting document by ${key}: ${error.message}`);
     }
   }
 }
