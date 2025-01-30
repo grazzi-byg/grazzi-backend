@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get("/", (req, res) => ProductController.getAll(req, res));  
 router.post("/", (req, res) => ProductController.create(req, res));
-router.get("/:id", (req, res) => ProductController.getById(req, res));
-router.put("/:id", (req, res) => ProductController.updateById(req, res));
-router.delete("/:id", (req, res) => ProductController.deleteById(req, res));
+router.get("/:key/:value", (req, res) => ProductController.getByKey(req, res));
+router.put("/:key/:value", (req, res) => ProductController.updateByKey(req, res));
+router.delete("/:key/:value", (req, res) => ProductController.deleteByKey(req, res));
 
 module.exports = router;
