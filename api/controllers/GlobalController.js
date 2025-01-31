@@ -1,7 +1,6 @@
 class GlobalController {
   constructor(dao) {    
     this.dao = dao;
-    console.log(this.dao);
   }
 
   async create(req, res) {
