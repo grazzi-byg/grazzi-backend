@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema(
     housingDetail: { type: String },
     neighborhood: { type: String },
     city: { type: String, required: true },
+    shopping_bag: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamps: true }
 );

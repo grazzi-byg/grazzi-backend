@@ -46,7 +46,9 @@ class GlobalDAO {
 
   async deleteByKey(key, value) {
     try {
-      const deletedDocument = await this.model.findOneAndDelete({ [key]: value });
+      const deletedDocument = await this.model.findOneAndDelete({
+        [key]: value,
+      });
       if (!deletedDocument) throw new Error("Document not found");
       return deletedDocument;
     } catch (error) {

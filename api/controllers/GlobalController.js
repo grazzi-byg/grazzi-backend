@@ -1,5 +1,5 @@
 class GlobalController {
-  constructor(dao) {    
+  constructor(dao) {
     this.dao = dao;
     console.log(this.dao);
   }
