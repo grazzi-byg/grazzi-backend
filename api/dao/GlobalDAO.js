@@ -23,12 +23,12 @@ class GlobalDAO {
   async getByKey(key, value) {
     try {
       const document = await this.model.findOne({ [key]: value });
-      if (!document) throw new Error("Document not found");
-      return document;
+      return document || null;  
     } catch (error) {
       throw new Error(`Error getting document by ${key}: ${error.message}`);
     }
   }
+  
 
   async updateByKey(key, value, updateData) {
     try {
