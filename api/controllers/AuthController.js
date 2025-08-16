@@ -1,11 +1,11 @@
-const AdminUser = require("../models/AdminUser");
+const AdminUserDAO = require("../dao/AdminUserDAO");
 const CryptoJS = require("crypto-js");
 
 class AuthController {
   async login(req, res) {
     const { email, password } = req.body;
     try {
-      const user = await AdminUser.findOne({ email });
+      const user = await AdminUserDAO.getByKey("email", email);
       if (!user) {
         return res.status(401).json({ error: "Invalid credentials" });
       }
