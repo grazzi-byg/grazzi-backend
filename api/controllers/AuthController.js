@@ -1,32 +1,48 @@
-const User = require("../models/User");
-const crypto = require("crypto");
+const AdminUserDAO = require("../dao/AdminUserDAO");
+const CryptoJS = require("crypto-js");
 
 class AuthController {
   async login(req, res) {
     const { email, password } = req.body;
     try {
-      const user = await User.findOne({ email });
+      const user = await AdminUserDAO.getByKey("email", email);
       if (!user) {
-        return res.status(401).json({ error: "Credenciales inválidas" });
+        return res.status(401).json({ error: "Invalid credentials" });
       }
-      const hash = crypto.createHash("sha256").update(password).digest("hex");
+      const hash = CryptoJS.SHA256(password).toString();
       if (user.password !== hash) {
-        return res.status(401).json({ error: "Credenciales inválidas" });
+        return res.status(401).json({ error: "Invalid credentials" });
       }
-      const header = Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64url");
-      const payload = Buffer.from(
-        JSON.stringify({ id: user._id.toString(), iat: Math.floor(Date.now() / 1000) })
-      ).toString("base64url");
-      const signature = crypto
-        .createHmac("sha256", process.env.JWT_SECRET || "secret")
-        .update(`${header}.${payload}`)
-        .digest("base64url");
+      const header = base64url(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+      const payload = base64url(
+        JSON.stringify({
+          id: user._id.toString(),
+          role: user.role,
+          iat: Math.floor(Date.now() / 1000),
+        })
+      );
+      const signature = CryptoJS.HmacSHA256(
+        `${header}.${payload}`,
+        process.env.JWT_SECRET || "secret"
+      )
+        .toString(CryptoJS.enc.Base64)
+        .replace(/=/g, "")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
       const token = `${header}.${payload}.${signature}`;
       res.json({ token });
     } catch (err) {
-      res.status(500).json({ error: "Error en el servidor" });
+      res.status(500).json({ error: "Server error" });
     }
   }
+}
+
+function base64url(str) {
+  return Buffer.from(str)
+    .toString("base64")
+    .replace(/=/g, "")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
 }
 
 module.exports = new AuthController();
