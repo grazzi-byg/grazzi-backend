@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const crypto = require("crypto");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -13,6 +14,7 @@ const UserSchema = new mongoose.Schema(
     lastName1: { type: String, required: true, default: "N/A" },
     lastName2: { type: String, required: true, default: "N/A" },
     email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     phone: { type: String, required: true, default: "N/A" },
     address: { type: String, required: true, default: "N/A" },
     housingDetail: { type: String, default: "N/A" },
@@ -34,5 +36,11 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+UserSchema.pre("save", function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = crypto.createHash("sha256").update(this.password).digest("hex");
+  next();
+});
 
 module.exports = mongoose.model("User", UserSchema);
